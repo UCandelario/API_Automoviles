@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Registro de Vehículos</h1>
+    
 
     <form id="vehiculoForm">
         <label for="placa">Placa:</label>
@@ -23,6 +24,12 @@
         <button type="button" id="btnBuscar">Buscar</button>
         <button type="button" id="btnEliminar">Eliminar</button>
     </form>
+    
+    <h2>Lista de Vehículos</h2>
+    <ul id="listaVehiculos"></ul>
+    
+    <h2>Detalles del Vehículo</h2>
+    <div id="detallesVehiculo"></div>
 
     <script>
         const vehiculoForm = document.getElementById('vehiculoForm');
@@ -58,28 +65,50 @@
         }
 
         function listarVehiculos() {
-            fetch('http://localhost:3000/vehiculos')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+    fetch('http://localhost:3000/vehiculos')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        mostrarVehiculosEnDOM(data.vehiculos);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
-        function buscarVehiculo() {
-            const placa = document.getElementById('placa').value;
+function mostrarVehiculosEnDOM(vehiculos) {
+    const listaVehiculos = document.getElementById('listaVehiculos');
+    listaVehiculos.innerHTML = ''; // Limpiar la lista antes de agregar los nuevos elementos
 
-            fetch(`http://localhost:3000/vehiculos/${placa}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+    vehiculos.forEach(vehiculo => {
+        const vehiculoElement = document.createElement('li');
+        vehiculoElement.textContent = `Placa: ${vehiculo.placa}, Marca: ${vehiculo.marca}, Modelo: ${vehiculo.modelo}`;
+        listaVehiculos.appendChild(vehiculoElement);
+    });
+}
+
+function buscarVehiculo() {
+    const placa = document.getElementById('placa').value;
+
+    fetch(`http://localhost:3000/vehiculos/${placa}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        mostrarVehiculoEnDOM(data.vehiculo);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function mostrarVehiculoEnDOM(vehiculo) {
+    const detallesVehiculo = document.getElementById('detallesVehiculo');
+    detallesVehiculo.innerHTML = ''; // Limpiar los detalles antes de agregar los nuevos elementos
+
+    const vehiculoElement = document.createElement('div');
+    vehiculoElement.textContent = `Placa: ${vehiculo.placa}, Marca: ${vehiculo.marca}, Modelo: ${vehiculo.modelo}`;
+    detallesVehiculo.appendChild(vehiculoElement);
+}
 
         function eliminarVehiculo() {
             const placa = document.getElementById('placa').value;
