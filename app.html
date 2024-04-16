@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form>
+        numero:<input type="text" id="txtnum">
+        <button type="button" id="btnList">Listar</button>
+        <button type="button" id="btnBuscar">Buscar</button>
+        <button type="button" id="btnAgregar">Agregar</button>
+        <button type="button" id="btnDel">Eliminar</button>
+    </form>
+    <div id="detalles"></div>
+<script >
+    
+const btnList = document.getElementById('btnList');
+btnList.addEventListener('click', () => {
+    fetch('http://localhost:3000/numeros')
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+});
+
+</script>
+</body>
+</html>
